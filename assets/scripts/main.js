@@ -60,7 +60,7 @@ function initializeServiceWorker() {
       window.addEventListener('load', function() {
         try {
           const registration = navigator.serviceWorker.register("./sw.js", {
-            scope: "/",
+            scope: ".",
           });
           
           if (registration.installing) {
