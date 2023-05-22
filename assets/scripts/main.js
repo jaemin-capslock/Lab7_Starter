@@ -172,4 +172,3 @@ function addRecipesToDocument(recipes) {
     main.append(recipeCard);
   });
 }
-v;
