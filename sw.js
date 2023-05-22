@@ -7,9 +7,14 @@ const CACHE_NAME = 'lab-7-starter';
 self.addEventListener('install', function (event) {
   event.waitUntil(
     caches.open(CACHE_NAME).then(function (cache) {
-      // B6. TODO - Add all of the URLs from RECIPE_URLs here so that they are
-      //            added to the cache when the ServiceWorker is installed
-      return cache.addAll(getRecipes());
+      return cache.addAll([
+        'https://introweb.tech/assets/json/1_50-thanksgiving-side-dishes.json',
+        'https://introweb.tech/assets/json/2_roasting-turkey-breast-with-stuffing.json',
+        'https://introweb.tech/assets/json/3_moms-cornbread-stuffing.json',
+        'https://introweb.tech/assets/json/4_50-indulgent-thanksgiving-side-dishes-for-any-holiday-gathering.json',
+        'https://introweb.tech/assets/json/5_healthy-thanksgiving-recipe-crockpot-turkey-breast.json',
+        'https://introweb.tech/assets/json/6_one-pot-thanksgiving-dinner.json',
+      ]);
     })
   );
 });
@@ -21,7 +26,19 @@ self.addEventListener('activate', function (event) {
 
 // Intercept fetch requests and cache them
 self.addEventListener('fetch', function (event) {
-  event.
+  event.respondWith(
+    caches.open(CACHE_NAME).then(function (cache) {
+      return cache.match(event.request).then(function (cachedResponse) {
+        if (cachedResponse){
+          return cachedResponse
+        }
+        return fetch(event.request).then(function (fetchedResponse) {
+          cache.put(event.request, fetchedResponse.clone());
+          return fetchedResponse;
+        });
+      })
+    })
+  )
   // We added some known URLs to the cache above, but tracking down every
   // subsequent network request URL and adding it manually would be very taxing.
   // We will be adding all of the resources not specified in the intiial cache

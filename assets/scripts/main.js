@@ -55,33 +55,31 @@ function initializeServiceWorker() {
   //            log that it has failed.
   // STEPS B6 ONWARDS WILL BE IN /sw.js
   const registerServiceWorker = async () => {
-    // B1. TODO - Check if 'serviceWorker' is supported in the current browser
+
     if ("serviceWorker" in navigator) {
-      try {
-        // B3. TODO - Register './sw.js' as a service worker
-        const registration = await navigator.serviceWorker.register("/sw.js", {
-          scope: "/",
-        });
-        
-        // B4. TODO - Once the service worker has been successfully registered, console
-        // log that it was successful.
-        if (registration.installing) {
-          console.log("Service worker installing");
-        } else if (registration.waiting) {
-          console.log("Service worker installed");
-        } else if (registration.active) {
-          console.log("Service worker active");
+      window.addEventListener('load', function() {
+        try {
+          const registration = navigator.serviceWorker.register("/sw.js", {
+            scope: "/",
+          });
+          
+          if (registration.installing) {
+            console.log("Service worker installing");
+          } else if (registration.waiting) {
+            console.log("Service worker installed");
+          } else if (registration.active) {
+            console.log("Service worker active");
+          }
+        } catch (error) {
+
+          console.error(`Registration failed with ${error}`);
         }
-      } catch (error) {
-        // B5. TODO - In the event that the service worker registration fails, console
-        // log that it has failed.
-        console.error(`Registration failed with ${error}`);
-      }
+      })
+
     }
   };
   
   registerServiceWorker();
-    
   }
 
 
@@ -95,7 +93,7 @@ function initializeServiceWorker() {
  */
 async function getRecipes() {
   let storedRecipes = localStorage.getItem('recipes');
-  if (storedRecipes.length > 0){
+  if (storedRecipes){
     return JSON.parse(storedRecipes);
   }
 
