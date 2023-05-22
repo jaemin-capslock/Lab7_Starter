@@ -59,7 +59,7 @@ function initializeServiceWorker() {
     if ("serviceWorker" in navigator) {
       window.addEventListener('load', function() {
         try {
-          const registration = navigator.serviceWorker.register("/sw.js", {
+          const registration = navigator.serviceWorker.register("./sw.js", {
             scope: "/",
           });
           
@@ -177,4 +177,4 @@ function addRecipesToDocument(recipes) {
     recipeCard.data = recipe;
     main.append(recipeCard);
   });
-}
+}v
