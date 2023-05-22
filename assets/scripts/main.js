@@ -2,16 +2,16 @@
 
 // CONSTANTS
 const RECIPE_URLS = [
-  'https://introweb.tech/assets/json/1_50-thanksgiving-side-dishes.json',
-  'https://introweb.tech/assets/json/2_roasting-turkey-breast-with-stuffing.json',
-  'https://introweb.tech/assets/json/3_moms-cornbread-stuffing.json',
-  'https://introweb.tech/assets/json/4_50-indulgent-thanksgiving-side-dishes-for-any-holiday-gathering.json',
-  'https://introweb.tech/assets/json/5_healthy-thanksgiving-recipe-crockpot-turkey-breast.json',
-  'https://introweb.tech/assets/json/6_one-pot-thanksgiving-dinner.json',
+  "https://introweb.tech/assets/json/1_50-thanksgiving-side-dishes.json",
+  "https://introweb.tech/assets/json/2_roasting-turkey-breast-with-stuffing.json",
+  "https://introweb.tech/assets/json/3_moms-cornbread-stuffing.json",
+  "https://introweb.tech/assets/json/4_50-indulgent-thanksgiving-side-dishes-for-any-holiday-gathering.json",
+  "https://introweb.tech/assets/json/5_healthy-thanksgiving-recipe-crockpot-turkey-breast.json",
+  "https://introweb.tech/assets/json/6_one-pot-thanksgiving-dinner.json",
 ];
 
 // Run the init() function when the page has loaded
-window.addEventListener('DOMContentLoaded', init);
+window.addEventListener("DOMContentLoaded", init);
 
 // Starts the program, all function calls trace back here
 async function init() {
@@ -55,14 +55,13 @@ function initializeServiceWorker() {
   //            log that it has failed.
   // STEPS B6 ONWARDS WILL BE IN /sw.js
   const registerServiceWorker = async () => {
-
     if ("serviceWorker" in navigator) {
-      window.addEventListener('load', function() {
+      window.addEventListener("load", function () {
         try {
           const registration = navigator.serviceWorker.register("./sw.js", {
             scope: ".",
           });
-          
+
           if (registration.installing) {
             console.log("Service worker installing");
           } else if (registration.waiting) {
@@ -71,17 +70,14 @@ function initializeServiceWorker() {
             console.log("Service worker active");
           }
         } catch (error) {
-
           console.error(`Registration failed with ${error}`);
         }
-      })
-
+      });
     }
   };
-  
-  registerServiceWorker();
-  }
 
+  registerServiceWorker();
+}
 
 /**
  * Reads 'recipes' from localStorage and returns an array of
@@ -92,30 +88,28 @@ function initializeServiceWorker() {
  * @returns {Array<Object>} An array of recipes found in localStorage
  */
 async function getRecipes() {
-  let storedRecipes = localStorage.getItem('recipes');
-  if (storedRecipes){
+  let storedRecipes = localStorage.getItem("recipes");
+  if (storedRecipes) {
     return JSON.parse(storedRecipes);
   }
 
-  let req_recipes = []
+  let req_recipes = [];
 
-  return new Promise (async (resolve, reject) => {
-    for (let url of RECIPE_URLS){
-      try {
+  return new Promise(async (resolve, reject) => {
+    try {
+      for (let url of RECIPE_URLS) {
         let response = await fetch(url);
 
         let recipe = await response.json();
-
-        req_recipes.push(recipe)
+        req_recipes.push(recipe);
         saveRecipesToStorage(req_recipes);
         resolve(req_recipes);
       }
-      catch (error){
-        console.error(error)
-        reject(error)
-      }
+    } catch (error) {
+      console.error(error);
+      reject(error);
     }
-  })
+  });
   // EXPOSE - START (All expose numbers start with A)
   // A1. TODO - Check local storage to see if there are any recipes.
   //            If there are recipes, return them.
@@ -159,7 +153,7 @@ async function getRecipes() {
  * @param {Array<Object>} recipes An array of recipes
  */
 function saveRecipesToStorage(recipes) {
-  localStorage.setItem('recipes', JSON.stringify(recipes));
+  localStorage.setItem("recipes", JSON.stringify(recipes));
 }
 
 /**
@@ -171,10 +165,11 @@ function saveRecipesToStorage(recipes) {
  */
 function addRecipesToDocument(recipes) {
   if (!recipes) return;
-  let main = document.querySelector('main');
+  let main = document.querySelector("main");
   recipes.forEach((recipe) => {
-    let recipeCard = document.createElement('recipe-card');
+    let recipeCard = document.createElement("recipe-card");
     recipeCard.data = recipe;
     main.append(recipeCard);
   });
-}v
+}
+v;
